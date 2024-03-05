@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Shop from '../models/shop.js';
+import Item from '../models/item.js';
 
 const router = Router();
 
@@ -22,13 +23,25 @@ router.get('/shops', async (req, res) => {
     }
 });
 
+router.get('/shops/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const shop = await Shop.findById(id);
+        const items = await Item.find({ owner: id });
+        res.send({ shop, items });
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+});
+
 router.delete('/shops/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const shop = await Shop.findOneAndDelete({ _id: id });
         if (!shop) {
-            return res.status(404).send();
+            return res.status(404).send(`Can't find shop by id: ${id}`);
         }
+        await Item.deleteMany({ owner: id });
         res.send(shop);
     } catch (error) {
         res.status(500).json(error.message);

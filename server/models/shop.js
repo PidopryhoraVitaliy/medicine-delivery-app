@@ -11,10 +11,4 @@ const shopSchema = new mongoose.Schema({
     timestamps: true
 });
 
-shopSchema.virtual('items', {
-    ref: 'Item',
-    localField: '_id',
-    foreignField: 'owner'
-})
-
 export default mongoose.model('Shop', shopSchema);
