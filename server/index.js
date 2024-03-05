@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import shopRouter from './routers/shop.js';
 import itemRouter from './routers/item.js';
 
@@ -8,6 +9,7 @@ const DB_URL = 'mongodb+srv://user:eIpPrTtlQE2QNVFW@cluster0.dclces1.mongodb.net
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(shopRouter);
 app.use(itemRouter);
