@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button";
 
 import pills from '../../resources/pills.png';
+import { Col, Container, Row } from "react-bootstrap";
 
 const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = [] }) => {
     const [shops, setShops] = useState([]);
@@ -70,17 +71,19 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
     })
 
     return (
-        <div className="row" style={{ margin: 'auto' }}>
-            <div className="col-sm-2">
-                <ListGroup>
-                    <span>Shops:</span>
-                    {shopsElements}
-                </ListGroup>
-            </div>
-            <div className="col-sm-6 shop-items-conteiner">
-                {itemsElements}
-            </div>
-        </div>
+        <Container>
+            <Row>
+                <Col xs lg="2">
+                    <ListGroup>
+                        <span>Shops:</span>
+                        {shopsElements}
+                    </ListGroup>
+                </Col>
+                <Col className="shop-items-conteiner">
+                    {itemsElements}
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

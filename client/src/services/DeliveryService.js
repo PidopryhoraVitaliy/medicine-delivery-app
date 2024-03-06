@@ -4,7 +4,8 @@ const useDeliveryService = () => {
 
     const { request, clearError, status, setStatus } = useHttp();
 
-    const _apiBase = `http://localhost:5000/`;
+    // const _apiBase = `http://localhost:5000/`;
+    const _apiBase = `https://e699500.online-server.cloud/api/`;
 
     const getShops = async () => {
         console.log('getShops', new Date().toLocaleTimeString());

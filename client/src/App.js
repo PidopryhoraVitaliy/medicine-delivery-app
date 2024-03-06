@@ -5,6 +5,7 @@ import ShoppingCartPage from './components/pages/ShoppingCartPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AppHeader from './components/AppHeader';
 import { useState } from 'react';
+import { Container } from 'react-bootstrap';
 
 const App = () => {
   const [orderedItems, setOrderedItems] = useState([]);
@@ -45,26 +46,28 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className="app">
-        <AppHeader />
-        <main>
-          <Routes>
-            <Route path='/' element={
-              <DrugStoresPage
-                addOrderedItems={addOrderedItems}
-                removeOrderedItems={removeOrderedItems}
-                orderedItems={orderedItems} />
-            } />
-            <Route path='/cart' element={
-              <ShoppingCartPage
-                addOrderedItems={addOrderedItems}
-                removeOrderedItems={removeOrderedItems}
-                orderedItems={orderedItems}
-                setCountOrderedItems={setCountOrderedItems}
-                clearOrderedItems={clearOrderedItems} />
-            } />
-            <Route path='*' element={<ErrorPage />} />
-          </Routes>
-        </main>
+        <Container>
+          <AppHeader />
+          <main>
+            <Routes>
+              <Route path='/' element={
+                <DrugStoresPage
+                  addOrderedItems={addOrderedItems}
+                  removeOrderedItems={removeOrderedItems}
+                  orderedItems={orderedItems} />
+              } />
+              <Route path='/cart' element={
+                <ShoppingCartPage
+                  addOrderedItems={addOrderedItems}
+                  removeOrderedItems={removeOrderedItems}
+                  orderedItems={orderedItems}
+                  setCountOrderedItems={setCountOrderedItems}
+                  clearOrderedItems={clearOrderedItems} />
+              } />
+              <Route path='*' element={<ErrorPage />} />
+            </Routes>
+          </main>
+        </Container>
       </div>
     </BrowserRouter>
   )
