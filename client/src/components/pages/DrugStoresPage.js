@@ -59,6 +59,7 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
             <Card.Img variant="top" src={pills} style={{ width: '10rem', padding: '10px' }} />
             <Card.Body>
                 <Card.Title>{item.title}</Card.Title>
+                <h6>price: {item.price}</h6>
                 <Card.Text>
                     {item.description}
                 </Card.Text>
@@ -76,7 +77,7 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
                     {shopsElements}
                 </ListGroup>
             </div>
-            <div className="col-sm-6 order-items-conteiner">
+            <div className="col-sm-6 shop-items-conteiner">
                 {itemsElements}
             </div>
         </div>

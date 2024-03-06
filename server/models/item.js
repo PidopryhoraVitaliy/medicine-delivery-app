@@ -14,7 +14,12 @@ const itemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Shop'
-    }
+    },
+    price: {
+        type: Number,
+        required: true,
+        min: 0.01
+    },
 }, {
     timestamps: true
 });

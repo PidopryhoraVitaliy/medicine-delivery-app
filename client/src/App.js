@@ -14,6 +14,9 @@ const App = () => {
     const foundItem = newOrderedItems.find(i => i._id === item._id);
     if (foundItem) {
       foundItem.count += count;
+      if (foundItem.count < 1) {
+        foundItem.count = 1;
+      }
     } else {
       newOrderedItems.push({ ...item, count });
     }
@@ -25,7 +28,19 @@ const App = () => {
     setOrderedItems(newOrderedItems);
   }
 
-  // console.log(orderedItems);
+  const setCountOrderedItems = (item, count) => {
+    const newCount = (parseInt(count) > 0) ? parseInt(count) : 0;
+    const newOrderedItems = [...orderedItems];
+    const foundItem = newOrderedItems.find(i => i._id === item._id);
+    if (foundItem) {
+      foundItem.count = newCount;
+    }
+    setOrderedItems(newOrderedItems);
+  }
+
+  const clearOrderedItems = () => {
+    setOrderedItems([]);
+  }
 
   return (
     <BrowserRouter>
@@ -34,10 +49,18 @@ const App = () => {
         <main>
           <Routes>
             <Route path='/' element={
-              <DrugStoresPage addOrderedItems={addOrderedItems} removeOrderedItems={removeOrderedItems} orderedItems={orderedItems} />
+              <DrugStoresPage
+                addOrderedItems={addOrderedItems}
+                removeOrderedItems={removeOrderedItems}
+                orderedItems={orderedItems} />
             } />
             <Route path='/cart' element={
-              <ShoppingCartPage addOrderedItems={addOrderedItems} removeOrderedItems={removeOrderedItems} orderedItems={orderedItems} />
+              <ShoppingCartPage
+                addOrderedItems={addOrderedItems}
+                removeOrderedItems={removeOrderedItems}
+                orderedItems={orderedItems}
+                setCountOrderedItems={setCountOrderedItems}
+                clearOrderedItems={clearOrderedItems} />
             } />
             <Route path='*' element={<ErrorPage />} />
           </Routes>

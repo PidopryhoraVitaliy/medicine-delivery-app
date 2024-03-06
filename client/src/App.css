@@ -28,9 +28,15 @@
   color: #61dafb;
 }
 
-.order-items-conteiner {
+.shop-items-conteiner {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.cart-items-conteiner {
+  display: grid;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }

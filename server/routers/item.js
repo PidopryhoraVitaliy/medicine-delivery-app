@@ -4,9 +4,9 @@ import Item from '../models/item.js';
 const router = Router();
 
 router.post('/items/', async (req, res) => {
-    const { owner, title, description } = req.body;
+    const { owner, title, description, price } = req.body;
     try {
-        const item = await Item.create({ owner, title, description });
+        const item = await Item.create({ owner, title, description, price });
         res.status(201).send(item);
     } catch (error) {
         res.status(500).json(error.message);

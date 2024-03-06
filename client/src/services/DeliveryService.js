@@ -18,7 +18,13 @@ const useDeliveryService = () => {
         return res;
     }
 
-    return { clearError, status, setStatus, getShops, getShopData }
+    const sendOrder = async (data) => {
+        const res = await request(`${_apiBase}orders/`, 'POST', JSON.stringify(data));
+        console.log(data);
+        return res;
+    }
+
+    return { clearError, status, setStatus, getShops, getShopData, sendOrder }
 }
 
 export default useDeliveryService;
