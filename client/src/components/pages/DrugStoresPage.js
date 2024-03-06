@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import useDeliveryService from "../../services/DeliveryService";
 
-const DrugStoresPage = () => {
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import Button from "react-bootstrap/Button";
+
+import pills from '../../resources/pills.png';
+
+const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = [] }) => {
     const [shops, setShops] = useState([]);
+    const [items, setItems] = useState([]);
     const [currentShop, setCurrentShop] = useState('');
 
-    const { getShops, status, setStatus } = useDeliveryService();
+    const { getShops, getShopData } = useDeliveryService();
 
     useEffect(() => {
-        onRequest();
+        getShopsList();
     }, []);
 
-    const onRequest = () => {
+    const getShopsList = () => {
         getShops()
             .then(data => {
                 setShops(data);
@@ -19,26 +26,59 @@ const DrugStoresPage = () => {
                     changeCurrentShop(data[0]._id);
                 }
             })
-            .then(() => setStatus('confirmed'));
     }
 
     const changeCurrentShop = (id) => {
         setCurrentShop(id);
+        if (!id) {
+            setItems([]);
+            return;
+        }
+        getShopData(id)
+            .then(data => {
+                setItems(data.items);
+            })
     }
 
     const shopsElements = shops.map(shop => {
-        const className = "btn btn-block btn-primary " + ((currentShop === shop._id) ? "active" : "");
-        return <li className={className} key={shop._id}>{shop.title}</li>;
+        const isActive = currentShop === shop._id;
+        return <ListGroup.Item
+            variant="primary"
+            action
+            active={isActive}
+            key={shop._id}
+            onClick={() => changeCurrentShop(shop._id)}>
+            {shop.title}
+        </ListGroup.Item>
+    })
+
+    const itemsElements = items.map(item => {
+        const foundItem = orderedItems.find(i => i._id === item._id);
+        const border = (foundItem) ? 'success' : '';
+        return <Card key={item._id} style={{ padding: '10px', borderInlineWidth: '2px' }} border={border}>
+            <Card.Img variant="top" src={pills} style={{ width: '10rem', padding: '10px' }} />
+            <Card.Body>
+                <Card.Title>{item.title}</Card.Title>
+                <Card.Text>
+                    {item.description}
+                </Card.Text>
+                <Button variant="primary" onClick={() => addOrderedItems(item)}>add to Cart</Button>
+                <Button variant="secondary" style={{ marginLeft: '10px' }} onClick={() => removeOrderedItems(item)}>remove</Button>
+            </Card.Body>
+        </Card>
     })
 
     return (
-        <div className="row" style={{ marginLeft: '2px' }}>
+        <div className="row" style={{ margin: 'auto' }}>
             <div className="col-sm-2">
-                <ul className="btn-group-vertical">Shops:
+                <ListGroup>
+                    <span>Shops:</span>
                     {shopsElements}
-                </ul>
+                </ListGroup>
             </div>
-            <div className="col-sm-8">.col-sm-8</div>
+            <div className="col-sm-6 order-items-conteiner">
+                {itemsElements}
+            </div>
         </div>
     )
 }

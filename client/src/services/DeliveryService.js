@@ -7,12 +7,13 @@ const useDeliveryService = () => {
     const _apiBase = `http://localhost:5000/`;
 
     const getShops = async () => {
-        const res = await request(`${_apiBase}shops/`);
         console.log('getShops', new Date().toLocaleTimeString());
+        const res = await request(`${_apiBase}shops/`);
         return res;
     }
 
     const getShopData = async (id) => {
+        console.log('getShopData', new Date().toLocaleTimeString());
         const res = await request(`${_apiBase}shops/${id}`);
         return res;
     }
