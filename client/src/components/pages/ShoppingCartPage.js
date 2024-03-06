@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button";
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -8,8 +10,6 @@ import Alert from 'react-bootstrap/Alert';
 
 import useDeliveryService from '../../services/DeliveryService';
 import pills from '../../resources/pills.png';
-import { useState } from 'react';
-import { Container } from 'react-bootstrap';
 
 const ShoppingCartPage = ({ orderedItems = [], addOrderedItems, removeOrderedItems, setCountOrderedItems, clearOrderedItems }) => {
 
@@ -17,6 +17,20 @@ const ShoppingCartPage = ({ orderedItems = [], addOrderedItems, removeOrderedIte
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) { return; }
+        if (userData.name) { setName(userData.name); }
+        if (userData.email) { setEmail(userData.email); }
+        if (userData.phone) { setPhone(userData.phone); }
+        if (userData.address) { setAddress(userData.address); }
+    }, []);
+
+    useEffect(() => {
+        const userData = { name, email, phone, address };
+        localStorage.setItem('userData', JSON.stringify(userData));
+    }, [name, email, phone, address]);
 
     const [sendingStatus, setSendingStatus] = useState('idle');
     const [orderId, setOrderId] = useState('');
@@ -67,11 +81,14 @@ const ShoppingCartPage = ({ orderedItems = [], addOrderedItems, removeOrderedIte
 
     const alertStyles = { maxHeight: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
+    //const commonStyles = { height: '80vh', border: 'solid', overflow: 'auto' };
+    const commonStyles = { height: '80vh', overflow: 'auto' };
+
     return (
         <Container>
             <Form onSubmit={onSubmit}>
-                <Row>
-                    <Col>
+                <Row style={{ height: '82vh', border: 'solid', borderWidth: '1px', borderRadius: '10px', paddingTop: '5px', paddingLeft: '15px', paddingRight: '17px' }}>
+                    <Col style={{ ...commonStyles }}>
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>Name</Form.Label>
                             <Form.Control type="text" placeholder="Full name" required
@@ -101,7 +118,7 @@ const ShoppingCartPage = ({ orderedItems = [], addOrderedItems, removeOrderedIte
                             />
                         </Form.Group>
                     </Col>
-                    <Col className="cart-items-conteiner">
+                    <Col className="cart-items-conteiner" style={{ ...commonStyles }}>
                         <Alert variant='success' show={sendingStatus === 'fulfilled'} style={alertStyles}>
                             Success!
                             <p>Your order id: {orderId}</p>

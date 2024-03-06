@@ -1,32 +1,16 @@
-.App {
+/* .App {
   text-align: center;
+} */
+
+.app {
+    height: 100vh;
+    overflow-y: scroll;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-header {
+  margin-top: 5px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
 
 .shop-items-conteiner {
   display: grid;
@@ -39,4 +23,10 @@
   display: grid;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.shop-col {
+  height: '90vh';
+  border: 'solid';
+  overflow: 'auto';
 }

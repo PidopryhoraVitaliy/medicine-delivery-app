@@ -1,14 +1,26 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DrugStoresPage from './components/pages/DrugStoresPage';
-import './App.css';
 import ShoppingCartPage from './components/pages/ShoppingCartPage';
 import ErrorPage from './components/pages/ErrorPage';
 import AppHeader from './components/AppHeader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
+
+import './App.css';
 
 const App = () => {
   const [orderedItems, setOrderedItems] = useState([]);
+
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem('orderedItems'));
+    if (items) {
+      setOrderedItems(items);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('orderedItems', JSON.stringify(orderedItems));
+  }, [orderedItems]);
 
   const addOrderedItems = (item, count = 1) => {
     const newOrderedItems = [...orderedItems];

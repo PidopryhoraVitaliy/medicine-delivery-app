@@ -56,8 +56,9 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
     const itemsElements = items.map(item => {
         const foundItem = orderedItems.find(i => i._id === item._id);
         const border = (foundItem) ? 'success' : '';
+        const isAdded = (foundItem) ? true : false;
         return <Card key={item._id} style={{ padding: '10px', borderInlineWidth: '2px' }} border={border}>
-            <Card.Img variant="top" src={pills} style={{ width: '10rem', padding: '10px' }} />
+            <Card.Img variant="top" src={pills} style={{ width: '6rem' }} />
             <Card.Body>
                 <Card.Title>{item.title}</Card.Title>
                 <h6>price: {item.price}</h6>
@@ -65,21 +66,23 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
                     {item.description}
                 </Card.Text>
                 <Button variant="primary" onClick={() => addOrderedItems(item)}>add to Cart</Button>
-                <Button variant="secondary" style={{ marginLeft: '10px' }} onClick={() => removeOrderedItems(item)}>remove</Button>
+                {isAdded ? <Button variant="secondary" style={{ marginLeft: '10px' }} onClick={() => removeOrderedItems(item)}>remove</Button> : null}
             </Card.Body>
         </Card>
     })
 
+    const commonStyles = { height: '90vh', overflow: 'auto', padding: '10px' }
+
     return (
-        <Container>
+        <Container style={{ height: '92vh', border: 'solid', borderWidth: '1px', borderRadius: '10px', paddingTop: '5px', paddingLeft: '15px', paddingRight: '17px' }}>
             <Row>
-                <Col xs lg="2">
+                <Col className="col-sm-3 shop-col" style={{ ...commonStyles }}>
                     <ListGroup>
-                        <span>Shops:</span>
+                        <h5>Shops:</h5>
                         {shopsElements}
                     </ListGroup>
                 </Col>
-                <Col className="shop-items-conteiner">
+                <Col className="col-sm-9 shop-col shop-items-conteiner" style={{ ...commonStyles, padding: '10px' }}>
                     {itemsElements}
                 </Col>
             </Row>
