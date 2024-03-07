@@ -22,25 +22,4 @@ router.post('/orders', async (req, res) => {
     }
 });
 
-// router.get('/shops', async (req, res) => {
-//     try {
-//         const shops = await Shop.find();
-//         res.send(shops);
-//     } catch (error) {
-//         res.status(500).json(error.message);
-//     }
-// });
-
-// router.get('/shops/:id', async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const shop = await Shop.findById(id);
-//         const items = await Item.find({ owner: id });
-//         res.send({ shop, items });
-//     } catch (error) {
-//         res.status(500).json(error.message);
-//     }
-// });
-
-
 export default router;
