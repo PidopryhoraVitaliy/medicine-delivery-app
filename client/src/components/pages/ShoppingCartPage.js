@@ -81,7 +81,6 @@ const ShoppingCartPage = ({ orderedItems = [], addOrderedItems, removeOrderedIte
 
     const alertStyles = { maxHeight: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
-    //const commonStyles = { height: '80vh', border: 'solid', overflow: 'auto' };
     const commonStyles = { height: '80vh', overflow: 'auto' };
 
     return (

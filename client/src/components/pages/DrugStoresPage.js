@@ -6,12 +6,14 @@ import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button";
 
 import pills from '../../resources/pills.png';
-import { Col, Container, Row } from "react-bootstrap";
+import { ButtonGroup, Col, Container, Row, Form } from "react-bootstrap";
 
-const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = [] }) => {
+const DrugStoresPage = ({ orderedItems = [], addOrderedItems, removeOrderedItems, starItems = [], toggleStarItems }) => {
     const [shops, setShops] = useState([]);
     const [items, setItems] = useState([]);
     const [currentShop, setCurrentShop] = useState('');
+
+    const [sorting, setSorting] = useState('');
 
     const { getShops, getShopData } = useDeliveryService();
 
@@ -53,10 +55,24 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
         </ListGroup.Item>
     })
 
-    const itemsElements = items.map(item => {
+    const sortedItems = [...items];
+    if (sorting) {
+        const sortingMark = (sorting === 'up') ? 1 : -1;
+        sortedItems.sort((a, b) => {
+            const aStar = starItems.includes(a._id);
+            const bStar = starItems.includes(b._id);
+            if (aStar === bStar) return sortingMark * (a.price - b.price);
+            if (aStar) return -1;
+            if (bStar) return 1;
+        });
+    }
+
+    const itemsElements = sortedItems.map(item => {
         const foundItem = orderedItems.find(i => i._id === item._id);
         const border = (foundItem) ? 'success' : '';
         const isAdded = (foundItem) ? true : false;
+        const isStar = starItems.includes(item._id);
+        const starBtnVariant = (isStar) ? "primary" : "outline-primary";
         return <Card key={item._id} style={{ padding: '10px', borderInlineWidth: '2px' }} border={border}>
             <Card.Img variant="top" src={pills} style={{ width: '6rem' }} />
             <Card.Body>
@@ -65,13 +81,22 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
                 <Card.Text>
                     {item.description}
                 </Card.Text>
-                <Button variant="primary" onClick={() => addOrderedItems(item)}>add to Cart</Button>
+                <Button variant={starBtnVariant} onClick={() => toggleStarItems(item)}>&#11088;</Button>
+                <Button variant="primary" style={{ marginLeft: '10px' }} onClick={() => addOrderedItems(item)}>add to Cart</Button>
                 {isAdded ? <Button variant="secondary" style={{ marginLeft: '10px' }} onClick={() => removeOrderedItems(item)}>remove</Button> : null}
             </Card.Body>
         </Card>
     })
 
-    const commonStyles = { height: '90vh', overflow: 'auto', padding: '10px' }
+    const commonStyles = { height: '90vh', overflow: 'auto', padding: '10px' };
+
+    const handleSorting = (direction) => {
+        if (direction === sorting) {
+            setSorting('');
+        } else {
+            setSorting(direction);
+        }
+    }
 
     return (
         <Container style={{ height: '92vh', border: 'solid', borderWidth: '1px', borderRadius: '10px', paddingTop: '5px', paddingLeft: '15px', paddingRight: '17px' }}>
@@ -81,6 +106,13 @@ const DrugStoresPage = ({ addOrderedItems, removeOrderedItems, orderedItems = []
                         <h5>Shops:</h5>
                         {shopsElements}
                     </ListGroup>
+                    <Form.Group className="mb-3" controlId="sort" style={{ paddingTop: '20px' }}>
+                        <Form.Label>Sort by price:</Form.Label>
+                        <ButtonGroup size="sm" aria-label="sort" style={{ paddingLeft: '10px' }}>
+                            <Button variant={(sorting === 'up') ? "secondary" : "outline-secondary"} onClick={() => handleSorting('up')}  >up</Button>
+                            <Button variant={(sorting === 'down') ? "secondary" : "outline-secondary"} onClick={() => handleSorting('down')}  >down</Button>
+                        </ButtonGroup>
+                    </Form.Group>
                 </Col>
                 <Col className="col-sm-9 shop-col shop-items-conteiner" style={{ ...commonStyles, padding: '10px' }}>
                     {itemsElements}

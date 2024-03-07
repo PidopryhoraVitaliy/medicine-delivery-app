@@ -10,17 +10,26 @@ import './App.css';
 
 const App = () => {
   const [orderedItems, setOrderedItems] = useState([]);
+  const [starItems, setStarItems] = useState([]);
 
   useEffect(() => {
-    const items = JSON.parse(localStorage.getItem('orderedItems'));
-    if (items) {
-      setOrderedItems(items);
+    const orderedItems = JSON.parse(localStorage.getItem('orderedItems'));
+    if (orderedItems) {
+      setOrderedItems(orderedItems);
+    }
+    const starItems = JSON.parse(localStorage.getItem('starItems'));
+    if (starItems) {
+      setStarItems(starItems);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('orderedItems', JSON.stringify(orderedItems));
   }, [orderedItems]);
+
+  useEffect(() => {
+    localStorage.setItem('starItems', JSON.stringify(starItems));
+  }, [starItems]);
 
   const addOrderedItems = (item, count = 1) => {
     const newOrderedItems = [...orderedItems];
@@ -55,6 +64,17 @@ const App = () => {
     setOrderedItems([]);
   }
 
+  const toggleStarItems = (item) => {
+    const isStar = starItems.includes(item._id);
+    if (isStar) {
+      const newStarItems = starItems.filter(i => i !== item._id);
+      setStarItems(newStarItems);
+    } else {
+      const newStarItems = [...starItems, item._id];
+      setStarItems(newStarItems);
+    }
+  }
+
   return (
     <BrowserRouter>
       <div className="app">
@@ -66,7 +86,9 @@ const App = () => {
                 <DrugStoresPage
                   addOrderedItems={addOrderedItems}
                   removeOrderedItems={removeOrderedItems}
-                  orderedItems={orderedItems} />
+                  orderedItems={orderedItems}
+                  starItems={starItems}
+                  toggleStarItems={toggleStarItems} />
               } />
               <Route path='/cart' element={
                 <ShoppingCartPage
