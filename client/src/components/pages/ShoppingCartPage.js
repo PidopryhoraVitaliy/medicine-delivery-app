@@ -120,7 +120,7 @@ const ShoppingCartPage = ({ orderedItems = [], addOrderedItems, removeOrderedIte
                     <Col className="cart-items-conteiner" style={{ ...commonStyles }}>
                         <Alert variant='success' show={sendingStatus === 'fulfilled'} style={alertStyles}>
                             Success!
-                            <p>Your order id: {orderId}</p>
+                            <p>Your order id: <b>{orderId}</b></p>
                         </Alert>
                         <Alert variant='danger' show={sendingStatus === 'rejected'} style={alertStyles}>
                             There is some problem with the connection or server. Try later!
